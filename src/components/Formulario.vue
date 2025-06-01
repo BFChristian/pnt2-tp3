@@ -1,44 +1,42 @@
 <template>
-    <div class="row g-3 align-items-center mb-3 input-group has-validation">
-        <div class="col-auto">
-            <label id="labelName" class="col-form-label">Nombre</label>
+    <form>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" v-model="formData.nombre" class="form-control"
+                aria-describedby="nombreTexto" />
+            <div id="nombreTexto" class="form-text">Ingrese un nombre que contenga entre 5 y 15 caracteres</div>
         </div>
-        <div class="col-auto">
-            <input type="text" id="inputName" class="form-control is-invalid "  aria-describedby="labelName validationName" required>
+        <div class="mb-3">
+            <label for="edad" class="form-label">Edad</label>
+            <input type="number" id="edad" v-model="formData.edad" class="form-control" aria-describedby="edadTexto" />
+            <div id="edadTexto" class="form-text">Ingrese una edad entre 18 y 120</div>
         </div>
-        <div class="col-auto">
-            <div id="passwordHelpInline" class="valid-feedback">
-                nombre entre 5 y 15 caracteres
-            </div>
-            <div id="validationName" class="invalid-feedback">Example invalid feedback text</div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" v-model="formData.email" class="form-control"
+                aria-describedby="emailTexto" />
+            <div id="emailTexto" class="form-text">Ingrese un email válido</div>
         </div>
-    </div>
-    <div class="row g-3 align-items-center mb-3">
-        <div class="col-auto">
-            <label for="inputAge" class="col-form-label">Edad</label>
-        </div>
-        <div class="col-auto">
-            <input type="number" id="inputAge" class="form-control" required>
-        </div>
-        <div class="col-auto">
-            <span id="passwordHelpInline" class="form-text">
-                entre 18 y 120 años
-            </span>
-        </div>
-    </div>
-    <div class="row g-3 align-items-center mb-3">
-        <div class="col-auto">
-            <label for="inputEmail" class="col-form-label">Email</label>
-        </div>
-        <div class="col-auto">
-            <input type="email" id="inputEmail" class="form-control" required>
-        </div>
-        <div class="col-auto">
-            <span id="passwordHelpInline" class="form-text">
-                email válido
-            </span>
-        </div>
-    </div>
+
+        <button :disabled="deshabilitarBotonEnviar">Enviar</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ formData.nombre }}</td>
+                <td>{{ formData.edad }}</td>
+                <td>{{ formData.email }}</td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script>
@@ -47,16 +45,23 @@ export default {
     props: [],
     data() {
         return {
-            nombre: "",
-            edad: "",
-            email: "",
+            formData: {
+                nombre: null,
+                edad: null,
+                email: null,
+            },
         }
     },
     methods: {
-
+        campoLimpio(campo) {
+            return campo === null || campo === '';
+        }
     },
     computed: {
-
+        deshabilitarBotonEnviar() {
+            let res = Object.values(this.formData).some(campo => this.campoLimpio(campo));
+            return res;
+        }
     }
 }
 </script>
