@@ -18,7 +18,7 @@
             <div id="emailTexto" class="form-text">Ingrese un email válido</div>
         </div>
 
-        <button :disabled="deshabilitarBotonEnviar">Enviar</button>
+        <button type="button" class="btn btn-primary" :disabled="deshabilitarBotonEnviar">Enviar datos</button>
     </form>
 
     <table>
@@ -55,12 +55,27 @@ export default {
     methods: {
         campoLimpio(campo) {
             return campo === null || campo === '';
+        },
+        validarNombre(nombre) {
+            return (nombre?.length >= 5 && nombre?.length <= 15);
+        },
+        validarEdad(edad) {
+            return (edad >= 18 && edad <= 120);
+        },
+        validarEmail(email) {
+            return email?.includes('@') && email?.includes('.com');
         }
     },
     computed: {
         deshabilitarBotonEnviar() {
-            let res = Object.values(this.formData).some(campo => this.campoLimpio(campo));
-            return res;
+            // TRUE = deshabilitado el botón
+            // FALSE = habilitado el botón
+            let resultado = false;
+            if (Object.values(this.formData).some(campo => this.campoLimpio(campo))) resultado = true;
+            if (!this.validarNombre(this.formData.nombre)) resultado = true;
+            if (!this.validarEdad(this.formData.edad)) resultado = true;
+            if (!this.validarEmail(this.formData.email)) resultado = true;
+            return resultado;
         }
     }
 }
